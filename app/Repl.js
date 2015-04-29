@@ -1,5 +1,6 @@
 var prompt = require('prompt');
 var log = console.log.bind(null);
+var Note = require('./models/Note');
 
 var Repl = {};
 
@@ -22,13 +23,12 @@ Repl.getCommand = function getCommand() {
 Repl.dispatchCommand = function dispatchCommand(command) {
     switch (command) {
         case 'n':
-            log('new note being made RIGHT NOW');
+            Repl.getNote();
             break;
         case 's':
             log('searching...');
             break;
     }
-    Repl.getCommand();
 };
 
 Repl.getNote = function getNote() {
@@ -40,7 +40,7 @@ Repl.getNote = function getNote() {
             throw err;
         }
         var parsedInput = Repl.parseNoteString(result.note);
-        Repl.dispatchCommand(result.command);
+        var note = Note.create(parsedInput.body, parsedInput.tags, parsedInput.mentions);
     });
 };
 
@@ -56,7 +56,7 @@ Repl.parseNoteString = function () {
         input = input.replace(mentionRe, '');
 
         input = input.trim();
-        return { tags: tags, mentions: mentions, body: input };
+        return { body: input, tags: tags, mentions: mentions };
     };
 }();
 
