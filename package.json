@@ -1,0 +1,25 @@
+{
+  "name": "node-to-self",
+  "version": "0.0.1",
+  "description": "quick and dirty note-taking with #tags and @mentions",
+  "scripts": {
+    "test": "mocha test --recursive test/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "node-to-self"
+  },
+  "keywords": [
+    "note",
+    "note-taking",
+    "notes"
+  ],
+  "author": "Travis Jefferson",
+  "license": "MIT",
+  "dependencies": {
+    "prompt": "^0.2.14"
+  },
+  "devDependencies": {
+    "mocha": "^2.2.4"
+  }
+}
