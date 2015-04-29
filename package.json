@@ -17,6 +17,7 @@
   "author": "Travis Jefferson",
   "license": "MIT",
   "dependencies": {
+    "moment": "^2.10.2",
     "prompt": "^0.2.14"
   },
   "devDependencies": {
