@@ -10,14 +10,15 @@ var Note = function () {};
  * @param {String} body
  * @param {Array.<String>} [tags]
  * @param {Array.<String>} [mentions]
+ * @param {Date} [createdAt]
  * @returns {Note} instance
  */
-Note.create = function create(body, tags, mentions) {
+Note.create = function create(body, tags, mentions, createdAt) {
     var instance = Object.create(Note.prototype);
     instance.body = body;
-    instance.createdAt = new Date(Date.now());
     instance.tags = (tags && tags.length ? tags : []);
     instance.mentions = (mentions && mentions.length ? mentions : []);
+    instance.createdAt = createdAt || new Date(Date.now());
     return instance;
 };
 
