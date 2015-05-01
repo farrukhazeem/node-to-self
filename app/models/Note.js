@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var log = console.log.bind(null);
-var moment = require('moment');
 
 var Note = function () {};
 
@@ -22,17 +21,16 @@ Note.create = function create(body, tags, mentions) {
     return instance;
 };
 
-var save = function save() {
-    var createdAt = moment(this.createdAt);
-    var filename = createdAt.format('YYYYMMDD[T]HHmmSS');
-    fs.writeFile(
-        path.join(__dirname, '..', '..', 'data', filename),
-        JSON.stringify(this),
+var save = function save(cb) {
+    fs.appendFile(
+        path.join(__dirname, '..', '..', 'data'),
+        JSON.stringify(this) + '\n',
         function (err) {
             if (err) {
                 throw err;
             }
-            log('Saved ', filename);
+            log('Saved');
+            cb();
         }
     );
 };

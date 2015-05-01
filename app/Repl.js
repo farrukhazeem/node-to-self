@@ -1,6 +1,5 @@
 var prompt = require('prompt');
 var log = console.log.bind(null);
-var moment = require('moment');
 
 var Note = require('./models/Note');
 
@@ -43,7 +42,7 @@ Repl.getNote = function getNote() {
         }
         var parsedInput = Repl.parseNoteString(result.note);
         var note = Note.create(parsedInput.body, parsedInput.tags, parsedInput.mentions);
-        note.save();
+        note.save(Repl.getCommand);
     });
 };
 
