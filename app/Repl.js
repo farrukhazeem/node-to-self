@@ -43,7 +43,7 @@ Repl.getCommand = function getCommand() {
     prompt.get([{
         name: 'command',
         description: 'n: new note, l: list notes, s: search notes'.green,
-        pattern: /[nsl]/
+        pattern: /^[nsl]$/
     }], function (err, result) {
         if (err) {
             throw err;
