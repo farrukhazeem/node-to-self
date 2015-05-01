@@ -1,5 +1,7 @@
 var assert = require('assert');
+var prompt = require('prompt');
 var Note = require('../../../app/models/Note');
+
 
 describe('Note.prototype.matchesQuery', function () {
     var note;
@@ -46,3 +48,26 @@ describe('Note.prototype.matchesQuery', function () {
         });
     });
 });
+
+describe('toString', function () {
+
+    var tests = [{
+        note: Note.create('body'), result: 'body'.yellow
+    }, {
+        note: Note.create('body', ['#tag1', '#tag2']),
+        result: 'body'.yellow + ' #tag1, #tag2'.green
+    }, {
+        note: Note.create('body', [], ['@mention1', '@mention2']),
+        result: 'body'.yellow + ' @mention1, @mention2'.red
+    }, {
+        note: Note.create('body', ['#tag1', '#tag2'], ['@mention1', '@mention2']),
+        result: 'body'.yellow + ' #tag1, #tag2'.green + ' @mention1, @mention2'.red
+    }];
+
+    tests.forEach(function (test) {
+        it('should provide a string representation', function () {
+            assert.strictEqual(test.note.toString(), test.result);
+        });
+    });
+});
+

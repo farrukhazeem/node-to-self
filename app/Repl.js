@@ -69,7 +69,8 @@ Repl.dispatchCommand = function dispatchCommand(command) {
 Repl.getNote = function getNote() {
     prompt.get([{
         name: 'note',
-        description: 'New note:'.green
+        description: 'New note:'.green,
+        required: true
     }], function (err, result) {
         if (err) {
             throw err;
@@ -89,7 +90,7 @@ Repl.listNotes = function listNotes(query) {
         Repl.notesArray
             .forEach(function (note) {
                 if (note.matchesQuery(query)) {
-                    log(JSON.stringify(note));
+                    log('' + note);
                 }
             });
 
@@ -97,7 +98,7 @@ Repl.listNotes = function listNotes(query) {
 
         Repl.notesArray
             .forEach(function (note) {
-                log(JSON.stringify(note));
+                log('' + note);
             });
     }
 

@@ -67,4 +67,15 @@ var matchesQuery = function matchesQuery(query) {
 };
 Note.prototype.matchesQuery = matchesQuery;
 
+Note.prototype.toString = function toString() {
+    var str = ('' + this.body).yellow;
+    if (this.tags && this.tags.length) {
+        str += (' ' + this.tags.join(', ')).green;
+    }
+    if (this.mentions && this.mentions.length) {
+        str += (' ' + this.mentions.join(', ')).red;
+    }
+    return str;
+};
+
 module.exports = Note;
