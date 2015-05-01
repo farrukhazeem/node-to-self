@@ -37,4 +37,34 @@ var save = function save(cb) {
 };
 Note.prototype.save = save;
 
+/**
+ * Test note against query to see if we have a match.
+ *
+ * @param { [body]: String, [tags]: Array.<String>, [mentions]: Array.<String> } query
+ * @returns {Boolean} match
+ */
+var matchesQuery = function matchesQuery(query) {
+    var self = this;
+    var match = true;
+
+    if (query.body) {
+        if (self.body.indexOf(query.body) === -1) {
+            match = false;
+        }
+    }
+
+    [ 'tags', 'mentions' ].forEach(function (arrayToCheck) {
+        if (query[arrayToCheck] && query[arrayToCheck].length) {
+            query[arrayToCheck].forEach(function (itemToCheck) {
+                if (self[arrayToCheck].indexOf(itemToCheck) === -1) {
+                    match = false;
+                }
+            });
+        }
+    });
+
+    return match;
+};
+Note.prototype.matchesQuery = matchesQuery;
+
 module.exports = Note;

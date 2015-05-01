@@ -58,7 +58,7 @@ Repl.dispatchCommand = function dispatchCommand(command) {
             Repl.getNote();
             break;
         case 's':
-            log('searching...');
+            Repl.getQuery();
             break;
         case 'l':
             Repl.listNotes();
@@ -83,15 +83,40 @@ Repl.getNote = function getNote() {
     });
 };
 
-Repl.listNotes = function () {
-    Repl.notesArray
-        .forEach(function (note) {
-            log(JSON.stringify(note));
-        });
+Repl.listNotes = function listNotes(query) {
+    if (query) {
+
+        Repl.notesArray
+            .forEach(function (note) {
+                if (note.matchesQuery(query)) {
+                    log(JSON.stringify(note));
+                }
+            });
+
+    } else {
+
+        Repl.notesArray
+            .forEach(function (note) {
+                log(JSON.stringify(note));
+            });
+    }
+
     Repl.getCommand();
 };
 
-Repl.parseNoteString = function () {
+Repl.getQuery = function getQuery() {
+    prompt.get([{
+        name: 'query',
+        description: 'Search notes:'.green
+    }], function (err, result) {
+        if (err) {
+            throw err;
+        }
+        Repl.listNotes(parseNoteString(result.query));
+    });
+};
+
+var parseNoteString = function parseNoteString() {
     var tagRe = /#[\w-_]+/g;
     var mentionRe = /@[\w-_]+/g;
 
@@ -106,6 +131,7 @@ Repl.parseNoteString = function () {
         return { body: input, tags: tags, mentions: mentions };
     };
 }();
+Repl.parseNoteString = parseNoteString;
 
 module.exports = Repl;
 
