@@ -12,13 +12,27 @@ prompt.delimiter = '';
 
 Repl.notesArray = [];
 
-Repl.loadNotesFromFile = function loadNotesFromFile(filename) {
+Repl.loadNotesFromFile = function loadNotesFromFile(filename, cb) {
     fs.readFile(
         path.join(__dirname, '..', filename),
         { encoding: 'utf8' },
         function (err, contents) {
             if (err) {
-                throw err;
+
+                // if file doesn't exist, create an empty one
+                if (err.code === 'ENOENT') {
+                    log('Initializing notes file at: ' + filename);
+                    fs.writeFile(filename, '', function (err) {
+                        if (err) {
+                            throw err;
+                        }
+                        log('Done.');
+                        cb();
+                    });
+                    return;
+                } else {
+                    throw err;
+                }
             }
 
             contents
@@ -35,6 +49,10 @@ Repl.loadNotesFromFile = function loadNotesFromFile(filename) {
                         )
                     );
                 });
+
+            log('Loaded ' + Repl.notesArray.length + ' notes.');
+
+            cb();
         }
     );
 };
@@ -137,6 +155,5 @@ Repl.parseNoteString = parseNoteString;
 module.exports = Repl;
 
 if (require.main === module)  {
-    Repl.loadNotesFromFile('data');
-    Repl.getCommand();
+    Repl.loadNotesFromFile('data', Repl.getCommand);
 }
